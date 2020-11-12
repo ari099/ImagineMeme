@@ -29,13 +29,19 @@ def imagine():
     img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     # Add text to picture
-    with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
-        with Image.open(f) as image:
-            draw = ImageDraw.Draw(image)
-            font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'ARIZON.otf'), 16)
-            draw.text((0, 0),topText,(255,255,255),font=font)
-            draw.text((0, 20),bottomText,(255,255,255),font=font)
-            image.save(filename)
+    newImg = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    draw = ImageDraw.Draw(newImg)
+    font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'ARIZON.otf'), 90)
+    draw.text((0, 0),topText,(255,255,255),font=font)
+    draw.text((0, 120),bottomText,(255,255,255),font=font)
+    newImg = newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    # with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
+    #     with Image.open(f) as image:
+    #         draw = ImageDraw.Draw(image)
+    #         font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'ARIZON.otf'), 1125)
+    #         draw.text((0, 0),topText,(255,255,255),font=font)
+    #         draw.text((0, 120),bottomText,(255,255,255),font=font)
+    #         image.save(filename)
     
     # Send new pic
     safe_path = safe_join(app.config['UPLOAD_FOLDER'], filename)

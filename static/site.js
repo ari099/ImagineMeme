@@ -7,7 +7,11 @@ const App = props => {
     const [image, setImage] = React.useState(null);
     const [topText, setTopText] = React.useState("");
     const [bottomText, setBottomText] = React.useState("");
-    const showImage = e => setImage(e.target.files[0]);
+    const [memeImage, setMemeImage] = React.useState(null);
+    const showImage = e => {
+        setImage(e.target.files[0]);
+        setMemeImage(null);
+    }
     const uploadFormData = e => {
         if(image !== null && topText !== "" && bottomText !== "") {
             const formData = new FormData();
@@ -26,7 +30,7 @@ const App = props => {
 
             // Upload the information
             axios.post("/imagine/", formData, { responseType: "blob" }).then(response => {
-                console.log(response.data);
+                setMemeImage(URL.createObjectURL(response.data));
             })
         }
     }
@@ -59,6 +63,7 @@ const App = props => {
             </form>
             <button className="imgmm-btn btn btn-success"
                 onClick={uploadFormData}>Create Meme</button>
+            <img className="imgmm-img" src={memeImage} />
         </>
     );
 };
