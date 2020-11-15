@@ -30,18 +30,37 @@ def imagine():
 
     # Add text to picture
     newImg = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    img_width, img_height = newImg.size
     draw = ImageDraw.Draw(newImg)
-    font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'ARIZON.otf'), 90)
+    font_size = 90
+    font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+    size_width, size_height = draw.textsize(topText, font)
+    while size_width > img_width:
+        font_size -= 1
+        font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+        size_width, size_height = draw.textsize(topText, font)
+    
+    while size_width < img_width:
+        font_size += 1
+        font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+        size_width, size_height = draw.textsize(topText, font)
+    
     draw.text((0, 0),topText,(255,255,255),font=font)
-    draw.text((0, 120),bottomText,(255,255,255),font=font)
+    
+    font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+    size_width, size_height = draw.textsize(bottomText, font)
+    while size_width > img_width:
+        font_size -= 1
+        font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+        size_width, size_height = draw.textsize(bottomText, font)
+    
+    while size_width < img_width:
+        font_size += 1
+        font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'IMPACT.TTF'), font_size)
+        size_width, size_height = draw.textsize(bottomText, font)
+    
+    draw.text((0, img_height-size_height),bottomText,(255,255,255),font=font)
     newImg = newImg.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    # with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), 'rb') as f:
-    #     with Image.open(f) as image:
-    #         draw = ImageDraw.Draw(image)
-    #         font = ImageFont.truetype(os.path.join(app.config['FONTS_FOLDER'], 'ARIZON.otf'), 1125)
-    #         draw.text((0, 0),topText,(255,255,255),font=font)
-    #         draw.text((0, 120),bottomText,(255,255,255),font=font)
-    #         image.save(filename)
     
     # Send new pic
     safe_path = safe_join(app.config['UPLOAD_FOLDER'], filename)
